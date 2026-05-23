@@ -7,18 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useSessionToken } from "@/hooks/use-session-token";
+import { useCampaignUpdates } from "@/hooks/use-campaign-updates";
 import { Download, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 export default function CampaignDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { token } = useSessionToken();
+  useCampaignUpdates(token);
 
   const { data: campaign, refetch } = useQuery({
     queryKey: ["campaign", id, token],
     queryFn: () => api.getCampaign(token!, id),
     enabled: !!token && !!id,
-    refetchInterval: (q) => (q.state.data?.status === "generating" ? 2000 : false),
   });
 
   const exportFmt = async (format: string) => {

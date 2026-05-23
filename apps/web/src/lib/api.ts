@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export type Campaign = {
   id: string;
@@ -32,6 +32,24 @@ export type Dashboard = {
   usageChart: { date: string; tokens: number }[];
 };
 
+export type Me = {
+  id: string;
+  email: string;
+  fullName?: string;
+  role: string;
+  isPlatformAdmin: boolean;
+  organization: {
+    id: string;
+    name: string;
+    slug: string;
+    plan: string;
+    campaignLimit: number;
+    campaignsUsedThisMonth: number;
+    subscriptionStatus: string;
+    whiteLabelEnabled: boolean;
+  };
+};
+
 async function request<T>(path: string, token?: string, init?: RequestInit): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -53,7 +71,7 @@ export const api = {
   getCampaign: (token: string, id: string) => request<Campaign>(`/api/campaigns/${id}`, token),
   createCampaign: (token: string, body: unknown) =>
     request<Campaign>("/api/campaigns", token, { method: "POST", body: JSON.stringify(body) }),
-  getMe: (token: string) => request<{ id: string; email: string; fullName?: string; organization: { id: string; name: string; plan: string; campaignLimit: number; campaignsUsedThisMonth: number } }>("/api/auth/me", token),
+  getMe: (token: string) => request<Me>("/api/auth/me", token),
   getBrandKit: (token: string) => request<Record<string, string>>("/api/settings/brand-kit", token),
   updateBrandKit: (token: string, body: unknown) =>
     request<Record<string, string>>("/api/settings/brand-kit", token, { method: "PUT", body: JSON.stringify(body) }),

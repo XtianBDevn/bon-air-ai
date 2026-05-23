@@ -88,7 +88,7 @@ public class StripeBillingService(AppDbContext db, IConfiguration config) : IStr
             org.StripeSubscriptionId = session.SubscriptionId;
             org.SubscriptionStatus = "active";
 
-            db.Subscriptions.Add(new Subscription
+            db.Subscriptions.Add(new Entities.Subscription
             {
                 Id = Guid.NewGuid(),
                 OrganizationId = orgId,
