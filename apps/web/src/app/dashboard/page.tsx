@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useSessionToken } from "@/hooks/use-session-token";
+import { useCampaignUpdates } from "@/hooks/use-campaign-updates";
 import { formatNumber } from "@/lib/utils";
 import {
   AreaChart,
@@ -21,6 +22,7 @@ import {
 
 export default function DashboardPage() {
   const { token, loading: authLoading } = useSessionToken();
+  useCampaignUpdates(token);
 
   const { data: me } = useQuery({
     queryKey: ["me", token],
@@ -32,7 +34,6 @@ export default function DashboardPage() {
     queryKey: ["dashboard", token],
     queryFn: () => api.getDashboard(token!),
     enabled: !!token,
-    refetchInterval: 5000,
   });
 
   if (authLoading || isLoading) {
