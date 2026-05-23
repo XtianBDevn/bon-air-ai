@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+dist/
+bin/
+obj/
+exports/
+*.user
+*.suo
+.env
+.env.local
+.env.*.local
+apps/web/.env.local
+.DS_Store
+.idea/
+.vscode/
+*.log
